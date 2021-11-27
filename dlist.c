@@ -13,7 +13,7 @@ struct dnode * next; } dnode;
 
 typedef struct dlist {
 struct dnode * head;
-struct dnode * last;
+struct dnode * tail;
 long count;          } dlist;
 */
 
@@ -24,22 +24,23 @@ dlist * p = (dlist *)malloc(sizeof(dlist));
 if (!p) return NULL;
 p->count=0;
 p->head=NULL;
-p->last=NULL;
+p->tail=NULL;
 return p;
 }
 
 
 bool dlist_is_empty(dlist * list){
-if (!list->head&&!list->last) return false;
-return true;
+if (!list->head&&!list->tail) return true;
+return false;
 }
 
 int dlist_add(dlist*list,dnode * node){//добавление узла в конец
-if (dlist_is_empty(list)){
+if (dlist_is_empty(list)){//puts("empty");
 list->head=node;
-list->last=node;
+list->tail=node;
 }  else {
 node->prev=list->head;
+node->prev->next=node;
 list->head=node;}
 list->count++;
 node->list=list;
@@ -47,36 +48,45 @@ return list->count;
 }
 
 int dlist_ins(dlist * list, dnode * node){ //вставка узла в начало
-if (dlist_is_empty(list)){
+if (dlist_is_empty(list)){//puts("empty");
 list->head=node;
-list->last=node;
-} else {node->next=list->last;
-list->last=node;}
+list->tail=node;
+} else {node->next=list->tail;
+node->next->prev=node;
+list->tail=node;}
 list->count++;
 node->list=list;
 return list->count;
 }
 
 
-int dlist_list(dlist * list){//вывод узлов
-dnode * n=list->head;
-printf("list=%p n=%p n->next%p n->prev=%p \n",(void*)list,(void*)n,(void*)n->next,(void*)n->prev);
-long c=0;
- while (n->next) {
- c++;
- printf("point-%12p data-%5i count-%5li\n",(void*)n, n->data,c);
- n=n->prev;}
+unsigned long dlist_list(dlist * list){//вывод узлов
+unsigned long c=0;
+dnode * p = list->tail;
+while(p) {c++;
+	dnode_print(p);
+	p=p->next;}
 return c;}
+
+int dnode_print(dnode * node){
+
+printf("prev-%12p next-%12p data-%8i list-%12p\n",(void*)node->prev,
+		(void*)node->next,
+				node->data,(void*)node->list);
+
+return 0;
+}
+
 
 dnode * dlist_remove(dnode * node){//удаление узла
 node->list->count--;
 if (node->list->head!=node) 
 node->prev->next=node->next->prev;
  else node->list->head=node->prev;
- if (node->list->last==node) { 
+ if (node->list->tail==node) { 
         if (node->list->count!=0) 
       	printf("Warning! Count mismatch with dlist is empty. %li nodes is orphaned!",node->list->count);
-  			node->list->last=NULL;}
+  			node->list->tail=NULL;}
 node->list=NULL;
 return node;
 }
