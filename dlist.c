@@ -1,7 +1,7 @@
 #include "dlist.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
+//#include <stdbool.h>
 
 /*
 typedef struct dnode {
@@ -33,6 +33,13 @@ bool dlist_is_empty(dlist * list){
 if (!list->head&&!list->tail) return true;
 return false;
 }
+
+bool dlist_is_trivial(dlist * list){
+if (list->head==list->tail) return true;
+return false;
+}
+
+
 
 int dlist_add(dlist*list,dnode * node){//добавление узла в конец
 if (dlist_is_empty(list)){//puts("empty");
@@ -99,5 +106,14 @@ p->prev=NULL;
 p->next=NULL;
 p->list=NULL;
 return p;}
+
+
+dlist * dlist_sort(dlist * list){
+if (dlist_is_empty(list)) return NULL;
+if (dlist_is_trivial(list)) return list;
+
+return list;
+}
+
 
 

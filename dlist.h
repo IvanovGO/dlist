@@ -1,3 +1,6 @@
+#include <stdbool.h>
+
+
 typedef struct dnode {
 struct dnode * prev;
 struct dlist * list;
@@ -18,6 +21,11 @@ dnode * dlist_remove(dnode * node);
 int dlist_add(dlist * list,dnode * node);//добавление узла в конец
 
 int dlist_ins(dlist * list, dnode * node);//вставка узла в начало
+
+bool dlist_is_empty(dlist * list);
+
+bool dlist_is_trivial(dlist * list);
+
 
 unsigned long dlist_list(dlist * list);//вывод узлов
 
