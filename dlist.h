@@ -34,3 +34,10 @@ dnode * dlist_remove(dnode * node);//удаление узла
 dnode * dnode_add(int data);
 
 int dnode_print(dnode * node);
+
+dlist * dlist_sort(dlist * list);
+
+
+dnode * dlist_max(dlist * list);
+
+dnode * dlist_min(dlist * list);
