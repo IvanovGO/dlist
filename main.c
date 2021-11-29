@@ -3,7 +3,7 @@
 #include <time.h>
 
 
-void foo(dnode*node){printf("nodded by function COUNT = %li \n",node->list->count);node->list->count--;}
+
 
 int main(int argc,char * argv[]){
 
@@ -38,8 +38,7 @@ dnode_print(dnode_add(104));
 
 printf("LIST MAX COUNT = %li \n",dlist_max(dl)->list->count);
 printf("LIST MIN COUNT = %li \n",dlist_min(dl)->list->count);
-foo(dlist_min(dl));
-foo(dlist_min(dl));
+
 puts("/----------------------------SORT--------------------------/");
 
 printf("list max-%p \n",(void*)dlist_max(dl));

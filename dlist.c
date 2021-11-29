@@ -73,7 +73,7 @@ return list->count;
 
 
 unsigned long dlist_list(dlist * list){//вывод узлов
-if (!list) return -1;
+if (!list->tail) return -1;
 unsigned long c=0;
 dnode * p = list->tail;
 while(p) {c++;
@@ -115,17 +115,24 @@ if (!list->count) return NULL;
 list->count--;
 if (!list) puts("list NULL");
 printf("list->count=%li \n",list->count);
-dnode * p = node->prev->next;
 
+if (!list->count){
+list->tail=NULL;
+list->head=NULL;
+node->list=NULL;
+return node;
+}
 if (node==node->list->head) {
 node->prev->next=NULL;
 node->list->head=node->prev;
+node->list=NULL;
 return node;
 }
 
 if (node==node->list->tail) {
 node->next->prev=NULL;
 node->list->tail=node->next;
+node->list=NULL;
 return node;
 }
 
@@ -133,7 +140,7 @@ node->next->prev=node->prev;
 node->prev->next=node->next;
 
 
-//node->list=NULL;
+node->list=NULL;
 node->next=NULL;
 node->prev=NULL;
 return node;
@@ -149,6 +156,7 @@ printf("mp-data=%i\n",mp->data);
 return mp;}
 
 dnode * dlist_max(dlist * list){
+if(!list->tail) return NULL;
 dnode * p = list->tail;
 dnode * mp = p;
 int max=p->data;
@@ -182,7 +190,10 @@ p=list;
 puts("list p");
 printf ("tail p - %p dlist_list %li\n",(void*)p->tail,dlist_list(p));
 
-while(dlist_remove(dlist_max(p))) dlist_list(p);
+while(p->count) {puts("while");
+dlist_remove(dlist_max(p));
+dlist_list(p);
+}
 
 return p;
 }
